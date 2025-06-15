@@ -72,6 +72,10 @@ export default defineConfig({
       dts: 'src/components.d.ts',
     }),
   ],
+  define: {
+    'process.env': {},
+  },
+
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
