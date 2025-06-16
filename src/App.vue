@@ -1,3 +1,5 @@
+<script setup lang="ts"></script>
+
 <template>
   <div class="bg-[#1e1e2f] text-white font-sans">
     <div class="flex min-h-screen">
@@ -8,6 +10,3 @@
     </div>
   </div>
 </template>
-<script setup lang="ts">
-import Sidebar from "./components/Sidebar/Sidebar.vue";
-</script>

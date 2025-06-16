@@ -43,6 +43,8 @@
   },
   "dependencies": {
     "@intlify/unplugin-vue-i18n": "^6.0.8",
+    "ant-design-vue": "^4.2.6",
+    "chokidar": "^4.0.3",
     "electron-squirrel-startup": "^1.0.1",
     "postcss-scss": "^4.0.9",
     "sass": "^1.77.6",

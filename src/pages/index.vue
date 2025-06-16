@@ -1,6 +1,4 @@
-<script setup lang="ts">
-  import AppContent from '@/components/AppContent/AppContent.vue';
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <AppContent />
