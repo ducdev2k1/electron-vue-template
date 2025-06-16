@@ -15,6 +15,7 @@
               class="flex items-center gap-3 px-4 py-2 rounded-md text-white"
               :class="{ 'bg-[#2e2e44]': route.path === item.link }">
               <i class="fas fa-home text-white text-lg"></i>
+              <AntIcons :icon="item.icon" />
               <span class="text-sm font-medium">{{ t(item.title) }}</span>
             </RouterLink>
           </li>
