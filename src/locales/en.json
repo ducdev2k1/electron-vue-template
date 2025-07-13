@@ -1,6 +1,14 @@
 {
   "locale": {
-    "vi": "Vietnamese",
-    "en": "English"
+    "about": "About",
+    "activity": "Activity",
+    "en": "English",
+    "help": "Help",
+    "home": "Home",
+    "my_computer": "My Computer",
+    "setting": "Setting",
+    "share_by_me": "Share by me",
+    "share_with_me": "Share with me",
+    "vi": "Vietnamese"
   }
 }

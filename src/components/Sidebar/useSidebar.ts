@@ -12,14 +12,14 @@ export const sidebarConfig = [
     link: myRoute.activity,
   },
   {
-    title: 'locale.myComputer',
+    title: 'locale.my_computer',
     icon: 'DesktopOutlined',
     link: myRoute.myComputer,
   },
   {
-    title: 'locale.sharewithme',
+    title: 'locale.share_with_me',
     icon: 'UsergroupAddOutlined',
-    link: myRoute.sharewithme,
+    link: myRoute.shareWithMe,
   },
   {
     title: 'locale.about',

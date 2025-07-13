@@ -3,6 +3,6 @@
 import { contextBridge, ipcRenderer } from 'electron';
 
 contextBridge.exposeInMainWorld('api', {
-  selectFolder: () => ipcRenderer.invoke('select-folder'),
-  syncFolder: (folderPath: string) => ipcRenderer.invoke('sync-folder', folderPath),
+  selectDirectory: () => ipcRenderer.invoke('select-directory'),
+  syncDirectory: (folderPath: string) => ipcRenderer.send('sync-directory', folderPath),
 });

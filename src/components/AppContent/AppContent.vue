@@ -4,7 +4,10 @@
       <h1 class="text-white text-2xl font-semibold mb-1">Activity</h1>
       <p class="text-[#a0a0b8] text-sm">Paused</p>
     </div>
-    <button class="bg-[#4b4b66] text-xs text-white py-2 px-4 rounded-md hover:bg-[#5c5c7d] transition" type="button">
+    <button
+      @click="chooseFolder"
+      class="bg-[#4b4b66] text-xs text-white py-2 px-4 rounded-md hover:bg-[#5c5c7d] transition"
+      type="button">
       Resume sync
     </button>
   </div>
@@ -274,6 +277,17 @@
   </table>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+  const folder = ref('');
+
+  const chooseFolder = async () => {
+    const selected = await window.api.selectDirectory();
+    console.log('✅ Selected folder:', selected); // 👈 THÊM LOG
+    if (selected) {
+      folder.value = selected;
+      window.api.syncDirectory(selected);
+    }
+  };
+</script>
 
 <style scoped></style>

@@ -1,6 +1,14 @@
 {
   "locale": {
-    "vi": "Tiếng Việt",
-    "en": "English"
+    "about": "Giới thiệu",
+    "activity": "Hoạt động",
+    "en": "English",
+    "help": "Trợ giúp",
+    "home": "Trang chủ",
+    "my_computer": "Máy tính của tôi",
+    "setting": "Cài đặt",
+    "share_by_me": "Chia sẻ bởi tôi",
+    "share_with_me": "Chia sẻ với tôi",
+    "vi": "Tiếng Việt"
   }
 }

@@ -1,19 +1,24 @@
+import axios from 'axios';
+import chokidar from 'chokidar';
 import { app, BrowserWindow, dialog, ipcMain } from 'electron';
 import started from 'electron-squirrel-startup';
 import path from 'node:path';
+import { env } from 'node:process';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
   app.quit();
 }
-
+let mainWindow: BrowserWindow;
 const createWindow = () => {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 1300,
     height: 800,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
+      contextIsolation: true, // 🔥 CẦN THIẾT
+      nodeIntegration: false, // 🔥 CẦN THIẾT
     },
   });
 
@@ -57,8 +62,68 @@ app.on('window-all-closed', () => {
 
 // dialog selected folder
 ipcMain.handle('select-directory', async () => {
-  const result = await dialog.showOpenDialog({
+  const result = await dialog.showOpenDialog(mainWindow, {
     properties: ['openDirectory'],
   });
   return result.canceled ? null : result.filePaths[0];
 });
+
+ipcMain.on('sync-directory', (event, folderPath: string) => {
+  console.log('📁 Bắt đầu theo dõi thư mục:', folderPath);
+  const watcher = chokidar.watch(folderPath, {
+    ignored: /(^|[\/\\])\../, // Ignore hidden files
+    persistent: true,
+    usePolling: true,
+    interval: 100,
+    ignoreInitial: false, // 👈 sẽ quét các file đã có khi khởi tạo
+  });
+
+  watcher.on('add', (filePath) => {
+    console.log('🟢 File mới hoặc có sẵn:', filePath);
+    uploadFile(filePath);
+  });
+
+  watcher.on('change', (filePath) => {
+    console.log('🔄 File thay đổi:', filePath);
+  });
+
+  watcher.on('unlink', (filePath) => {
+    console.log('🗑️ File bị xóa:', filePath);
+  });
+
+  watcher.on('error', (error) => {
+    console.log('❌ Watcher Error:', error);
+  });
+});
+
+const uploadFile = async (filePath: string) => {
+  const COOKIE =
+    'onemail-auth=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50IjoiZHVjbmRAaW5ldC52biIsIndlYm1haWwiOiJ3ZWJtYWlsLmluZXQudm4iLCJkb21haW4iOiJpbmV0LnZuIiwiZmluZ2VyUHJpbnRJZCI6IjM5MGU2MWQ3MmQ0ZDc1MTcwNjAxZDEzOTQxZGM2OTM1IiwiaWF0IjoxNzUyMzk5ODU2fQ.xw9_ZfY_rOLsBwBUSYsH6Zn2Eij0L4tIlKjzI5YhxPc'; // Cookie bạn copy ở cURL
+
+  const fileName = filePath.replace(/\\/g, '/'); // Fix path for Windows
+
+  const payload = {
+    data: {
+      fileName: fileName, // VD: Telegram Desktop/image.png
+      nameAction: 'upload_custom',
+    },
+  };
+
+  try {
+    const response = await axios.post(`${env.urlBackend}/api/v1/user-fm-fast-upload-file`, payload, {
+      headers: {
+        'content-type': 'application/json',
+        accept: 'application/json, text/plain, */*',
+        origin: 'https://workspace.inet.vn',
+        referer: 'https://workspace.inet.vn/',
+        'user-agent':
+          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36',
+        cookie: COOKIE,
+      },
+    });
+
+    console.log(`✅ Uploaded: ${fileName}`, response.data);
+  } catch (err: any) {
+    console.error(`❌ Upload failed: ${fileName}`, err?.response?.data || err.message);
+  }
+};
