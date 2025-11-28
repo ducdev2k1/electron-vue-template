@@ -28,12 +28,10 @@
     :class="{
       'flex-row-reverse': iconRight,
     }">
-    <AntIcons :icon="iconName" v-if="iconName.length > 0 && !loading" />
-    <AntIcons icon="LoadingOutlined" v-if="loading" />
+    <MIcon :icon="iconName" v-if="iconName.length > 0 && !loading" />
+    <MIcon icon="LoadingOutlined" v-if="loading" />
     <slot name="beforeTitle"></slot>
     {{ title }}
     <slot name="title" />
   </a-button>
 </template>
-
-<style scoped lang="scss"></style>

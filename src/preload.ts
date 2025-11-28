@@ -5,4 +5,5 @@ import { contextBridge, ipcRenderer } from 'electron';
 contextBridge.exposeInMainWorld('api', {
   selectDirectory: () => ipcRenderer.invoke('select-directory'),
   syncDirectory: (folderPath: string) => ipcRenderer.send('sync-directory', folderPath),
+  login: () => ipcRenderer.invoke('login-request'),
 });

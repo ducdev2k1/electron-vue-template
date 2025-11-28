@@ -5,3 +5,5 @@ export const env = {
   vitePort,
   urlBackend,
 };
+
+export const timeoutCallApi = 60000; // timeout call api 60s

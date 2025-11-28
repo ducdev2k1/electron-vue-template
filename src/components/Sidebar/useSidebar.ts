@@ -3,37 +3,37 @@ import { myRoute } from '@/utils/MyRoute';
 export const sidebarConfig = [
   {
     title: 'locale.home',
-    icon: 'HomeOutlined',
+    icon: 'HomeRoundedIcon',
     link: myRoute.home,
   },
   {
     title: 'locale.activity',
-    icon: 'HistoryOutlined',
+    icon: 'HistoryRoundedIcon',
     link: myRoute.activity,
   },
   {
     title: 'locale.my_computer',
-    icon: 'DesktopOutlined',
+    icon: 'DesktopMacRoundedIcon',
     link: myRoute.myComputer,
   },
   {
     title: 'locale.share_with_me',
-    icon: 'UsergroupAddOutlined',
+    icon: 'ShareRoundedIcon',
     link: myRoute.shareWithMe,
   },
   {
     title: 'locale.about',
-    icon: 'InfoCircleOutlined',
+    icon: 'InfoRoundedIcon',
     link: myRoute.about,
   },
   {
     title: 'locale.setting',
-    icon: 'SettingOutlined',
+    icon: 'SettingsRoundedIcon',
     link: myRoute.setting,
   },
   {
     title: 'locale.help',
-    icon: 'QuestionCircleOutlined',
+    icon: 'HelpRoundedIcon',
     link: myRoute.help,
   },
 ];

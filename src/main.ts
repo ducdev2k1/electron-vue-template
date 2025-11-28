@@ -69,7 +69,7 @@ ipcMain.handle('select-directory', async () => {
 });
 
 ipcMain.on('sync-directory', (event, folderPath: string) => {
-  console.log('📁 Bắt đầu theo dõi thư mục:', folderPath);
+  console.log('📁 Sync directory:', folderPath);
   const watcher = chokidar.watch(folderPath, {
     ignored: /(^|[\/\\])\../, // Ignore hidden files
     persistent: true,
@@ -79,16 +79,16 @@ ipcMain.on('sync-directory', (event, folderPath: string) => {
   });
 
   watcher.on('add', (filePath) => {
-    console.log('🟢 File mới hoặc có sẵn:', filePath);
+    console.log('🟢 New file or existing file:', filePath);
     uploadFile(filePath);
   });
 
   watcher.on('change', (filePath) => {
-    console.log('🔄 File thay đổi:', filePath);
+    console.log('🔄 File changed:', filePath);
   });
 
   watcher.on('unlink', (filePath) => {
-    console.log('🗑️ File bị xóa:', filePath);
+    console.log('🗑️ File deleted:', filePath);
   });
 
   watcher.on('error', (error) => {
@@ -121,9 +121,35 @@ const uploadFile = async (filePath: string) => {
         cookie: COOKIE,
       },
     });
-
-    console.log(`✅ Uploaded: ${fileName}`, response.data);
+    console.log('🚀 main.ts ~ response :>>', response);
   } catch (err: any) {
     console.error(`❌ Upload failed: ${fileName}`, err?.response?.data || err.message);
   }
 };
+
+ipcMain.handle('login-request', async () => {
+  const loginWindow = new BrowserWindow({
+    width: 800,
+    height: 600,
+    parent: mainWindow,
+    modal: true,
+    webPreferences: {
+      nodeIntegration: false,
+      contextIsolation: true,
+    },
+  });
+
+  loginWindow.loadURL('https://webmail.inetdev.io.vn/login');
+
+  loginWindow.webContents.on('did-navigate', (event, url) => {
+    console.log('Login window navigated to:', url);
+    // Check if navigated to the main webmail page (indicating success)
+    // Adjust this condition based on the actual redirect URL
+    if (url === 'https://webmail.inetdev.io.vn/' || url.includes('/#')) {
+      console.log('Login successful, closing login window');
+      loginWindow.close();
+      mainWindow.focus();
+      mainWindow.reload(); // Optional: reload main window to update state
+    }
+  });
+});
